@@ -1,11 +1,14 @@
 const path = require("path");
+const src = path.resolve(__dirname, "src");
 
 module.exports = {
     mode: "development",
     entry: {
-        index: "./src/index.tsx",
+        index: `./${src}/index.js`,
+        account: `./${src}/account/index.js`,
+
     },
-    devtool: 'inline-source-map',
+    devtool: "inline-source-map",
     module: {
         rules: [
             {
@@ -28,18 +31,13 @@ module.exports = {
         extensions: [".tsx", ".ts", ".js"],
     },
     output: {
-        filename: "bundle.js",
+        filename: "[name].bundle.js",
         path: path.resolve(__dirname, "dist"),
     },
     optimization: {
         splitChunks: {
-            cacheGroups: {
-                common: {
-                    name: "common",
-                    test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
-                    chunks: "all",
-                }
-            }
-        }
+
+        },
+        runtimeChunk: "single",
     }
-};
+}; //
