@@ -1,12 +1,13 @@
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require("path");
-const src = path.resolve(__dirname, "src");
+
+const SOURCES_PATH = "src";
 
 module.exports = {
     mode: "development",
     entry: {
-        index: `./${src}/index.js`,
-        account: `./${src}/account/index.js`,
-
+        index: `./${SOURCES_PATH}/index.tsx`,
+        account: `./${SOURCES_PATH}/account/index.tsx`,
     },
     devtool: "inline-source-map",
     module: {
@@ -36,8 +37,34 @@ module.exports = {
     },
     optimization: {
         splitChunks: {
+            cacheGroups: {
+                common: {
+                    test(module) {
+                        const common_modules = [
+                            path.join("node_modules", "react"),
+                            path.join("node_modules", "react"),
+                            path.join("node_modules", "scheduler"),
+                            path.join("src", "core"),
+                        ]
 
+                        for (let md of common_modules) {
+                            if (module.resource.includes(md)) {
+                                return true;
+                            }
+                        }
+
+                        return false;
+                    },
+                    name: "common",
+                    chunks: "all"
+                }
+            }
         },
         runtimeChunk: "single",
-    }
-}; //
+    },
+    plugins: [
+        new HtmlWebpackPlugin({
+            chunks: ["index"]
+        })
+    ],
+};
