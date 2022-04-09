@@ -17,5 +17,5 @@ const mainView = () => {
 
 ReactDOM.render(
     <React.StrictMode>{mainView()}</React.StrictMode>,
-    document.getElementById("root")
+    document.getElementsByTagName("body")[0]
 );
